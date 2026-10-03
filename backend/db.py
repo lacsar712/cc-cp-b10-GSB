@@ -23,6 +23,15 @@ CREATE TABLE IF NOT EXISTS probe_readings (
     processed_at timestamptz
 );
 CREATE INDEX IF NOT EXISTS idx_probe_readings_status ON probe_readings (status, id);
+CREATE TABLE IF NOT EXISTS comparison_snapshots (
+    id serial PRIMARY KEY,
+    base_point_id integer NOT NULL REFERENCES probe_readings(id),
+    other_point_id integer NOT NULL REFERENCES probe_readings(id),
+    diff_c double precision NOT NULL,
+    points jsonb NOT NULL,
+    locked_by text NOT NULL,
+    locked_at timestamptz NOT NULL DEFAULT now()
+);
 """
 
 
@@ -51,6 +60,7 @@ async def seed_if_empty(pool: asyncpg.Pool) -> None:
         samples = [
             ("探头A01", 4.2),
             ("探头B02", 12.5),
+            ("探头C03", 6.8),
         ]
         for probe_id, temp_c in samples:
             verdict, reason = judge_temp(temp_c)
@@ -74,6 +84,7 @@ def seed_if_empty_sync(conn) -> None:
     samples = [
         ("探头A01", 4.2),
         ("探头B02", 12.5),
+        ("探头C03", 6.8),
     ]
     for probe_id, temp_c in samples:
         verdict, reason = judge_temp(temp_c)
