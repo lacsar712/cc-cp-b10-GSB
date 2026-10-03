@@ -13,7 +13,7 @@ body {
 }
 
 .wrap {
-  max-width: 960px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 1.5rem;
 }
@@ -133,4 +133,186 @@ td {
 .user {
   font-size: 0.875rem;
   color: #475569;
+}
+
+/* 顶栏导航 */
+.topright {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.nav {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.navbtn {
+  background: #e2e8f0;
+  color: #0f172a;
+  padding: 0.4rem 0.9rem;
+}
+
+.navbtn.active {
+  background: #0369a1;
+  color: #fff;
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 400;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+select {
+  padding: 0.45rem 0.55rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 0.9rem;
+}
+
+/* 对照页布局：中列点表 + 右侧差值与已锁区 */
+.cmp-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 1rem;
+  align-items: start;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.panel-title {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+
+.ck-col {
+  width: 2.5rem;
+}
+
+.ck {
+  min-width: 0;
+  width: 1rem;
+  height: 1rem;
+}
+
+.rowpick {
+  background: #eff6ff;
+}
+
+.rowpick td {
+  border-bottom-color: #bfdbfe;
+}
+
+.pickline {
+  font-size: 0.875rem;
+  color: #334155;
+  padding: 0.35rem 0;
+}
+
+.lockbtn {
+  background: #b45309;
+}
+
+.diffbox {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+}
+
+.diffbig {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #075985;
+}
+
+.list-title {
+  margin: 1rem 0 0.5rem;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.reclist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.825rem;
+}
+
+.reclist li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.75rem;
+  align-items: center;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.reclist li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.reclist strong {
+  color: #075985;
+}
+
+.snaplink,
+.backlink {
+  color: #0369a1;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.snaplink:hover,
+.backlink:hover {
+  text-decoration: underline;
+}
+
+.frozen-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tag.frozen {
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.85rem;
+}
+
+.mini-tag {
+  display: inline-block;
+  margin-left: 0.35rem;
+  padding: 0 0.35rem;
+  border-radius: 4px;
+  background: #dbeafe;
+  color: #1e40af;
+  font-size: 0.72rem;
+}
+
+.empty {
+  color: #94a3b8;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .cmp-grid {
+    grid-template-columns: 1fr;
+  }
 }

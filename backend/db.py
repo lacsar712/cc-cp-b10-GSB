@@ -23,6 +23,47 @@ CREATE TABLE IF NOT EXISTS probe_readings (
     processed_at timestamptz
 );
 CREATE INDEX IF NOT EXISTS idx_probe_readings_status ON probe_readings (status, id);
+
+-- 温度对照副本（锁定后即冻结，新办结不影响旧副本）
+CREATE TABLE IF NOT EXISTS comparison_snapshots (
+    id serial PRIMARY KEY,
+    point_limit int NOT NULL,
+    locked_by text NOT NULL,
+    locked_at timestamptz NOT NULL DEFAULT now(),
+    base_reading_id bigint,
+    target_reading_id bigint,
+    base_temp_c double precision,
+    target_temp_c double precision,
+    diff_c double precision
+);
+
+-- 副本冻结的点集（按办结先后，序号即对照页排名）
+CREATE TABLE IF NOT EXISTS comparison_snapshot_points (
+    id serial PRIMARY KEY,
+    snapshot_id int NOT NULL REFERENCES comparison_snapshots(id) ON DELETE CASCADE,
+    rank int NOT NULL,
+    reading_id bigint NOT NULL,
+    probe_id text NOT NULL,
+    temp_c double precision NOT NULL,
+    verdict text,
+    processed_at timestamptz
+);
+CREATE INDEX IF NOT EXISTS idx_snapshot_points_snapshot
+    ON comparison_snapshot_points (snapshot_id, rank);
+
+-- 在线选点差值，一律由服务端计算，浏览器不得自行相减
+CREATE TABLE IF NOT EXISTS comparison_diffs (
+    id serial PRIMARY KEY,
+    base_reading_id bigint NOT NULL,
+    target_reading_id bigint NOT NULL,
+    base_temp_c double precision NOT NULL,
+    target_temp_c double precision NOT NULL,
+    diff_c double precision NOT NULL,
+    requested_by text NOT NULL,
+    created_at timestamptz NOT NULL DEFAULT now()
+);
+CREATE INDEX IF NOT EXISTS idx_comparison_diffs_created
+    ON comparison_diffs (created_at DESC);
 """
 
 
